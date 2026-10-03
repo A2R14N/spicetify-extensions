@@ -20,7 +20,7 @@ Board and ball graphics are cached during a game. Closing the game stops its ani
 
 1. Install **Plinko Volume** from Spicetify Marketplace and reload Spotify.
 2. Open your profile menu and choose **Plinko Volume Settings**.
-3. Turn on **Enable Plinko Volume** and click **Save**.
+3. Turn on **Enable Plinko Volume** and click **Save settings**.
 4. Click the Plinko button beside the volume percentage to play.
 
 The extension starts disabled on a fresh installation. Disabling it restores Spotify's normal volume controls.
@@ -41,5 +41,9 @@ The extension starts disabled on a fresh installation. Disabling it restores Spo
 ## Settings
 
 Settings are saved locally and shared across Spotify profiles. **Reset** restores the defaults and disables the replacement controls.
+
+The settings dialog uses number steppers, labeled checkboxes, and color swatches. Click **Save settings** to apply changes. Press **Escape** or click outside the dialog to close it.
+
+![Plinko Volume settings](settings.png)
 
 Tested in Spotify **1.3.3.264** with Spicetify **2.45.3**.

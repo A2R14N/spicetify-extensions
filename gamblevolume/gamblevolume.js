@@ -218,131 +218,57 @@
       transform: scale(1.05);
     }
 
-    .pv-settings {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      padding: 8px 0;
-      font-family: var(--font-family, CircularSp, sans-serif);
-    }
-    .pv-settings-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .pv-settings-label {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--spice-subtext, #b3b3b3);
-    }
-    .pv-settings-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .pv-settings-row-label {
-      font-size: 14px;
+    .pv-settings-dialog {
       color: var(--spice-text, #fff);
-    }
-    .pv-settings-input {
-      background: var(--spice-card, #282828);
-      border: 1px solid var(--spice-shadow, #444);
-      border-radius: 6px;
-      color: var(--spice-text, #fff);
-      padding: 6px 10px;
-      font-size: 14px;
-      outline: none;
-      width: 70px;
-      text-align: center;
-    }
-    .pv-settings-input:focus {
-      border-color: var(--spice-button, #1db954);
-    }
-    .pv-settings-color {
-      width: 40px;
-      height: 30px;
-      border: 2px solid var(--spice-shadow, #444);
-      border-radius: 6px;
-      cursor: pointer;
+      background: var(--spice-card, #181818);
+      border: 1px solid #ffffff20;
+      border-radius: 14px;
       padding: 0;
-      background: none;
+      width: min(540px, calc(100vw - 40px));
+      max-height: calc(100vh - 40px);
+      box-shadow: 0 20px 90px #0009;
+      font: 14px/1.5 sans-serif;
+      overflow: auto;
     }
-    .pv-toggle {
-      position: relative;
-      width: 40px;
-      height: 22px;
-      flex-shrink: 0;
-    }
-    .pv-toggle input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    .pv-toggle-slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: var(--spice-shadow, #444);
-      border-radius: 22px;
-      transition: background 0.2s;
-    }
-    .pv-toggle-slider:before {
-      content: "";
-      position: absolute;
-      height: 16px;
-      width: 16px;
-      left: 3px;
-      bottom: 3px;
-      background: white;
-      border-radius: 50%;
-      transition: transform 0.2s;
-    }
-    .pv-toggle input:checked + .pv-toggle-slider {
-      background: var(--spice-button, #1db954);
-    }
-    .pv-toggle input:checked + .pv-toggle-slider:before {
-      transform: translateX(18px);
-    }
-    .pv-settings-divider {
-      height: 1px;
-      background: var(--spice-shadow, #333);
-      margin: 4px 0;
-    }
-    .pv-settings-btn {
-      background: var(--spice-button, #1db954);
-      color: #000;
-      border: none;
-      border-radius: 20px;
-      padding: 10px 24px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.1s, opacity 0.2s;
-      align-self: center;
-    }
-    .pv-settings-btn:hover {
-      transform: scale(1.04);
-      opacity: 0.9;
-    }
-    .pv-settings-btn-secondary {
-      background: transparent;
-      color: var(--spice-text, #fff);
-      border: 1px solid var(--spice-shadow, #444);
-    }
-    .pv-settings-btn-row {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      margin-top: 8px;
-    }
-    .pv-settings-status {
-      font-size: 12px;
-      text-align: center;
-      color: var(--spice-button, #1db954);
-      min-height: 18px;
+    .pv-settings-dialog::backdrop { background: #000a; }
+    .pv-settings-dialog * { box-sizing: border-box; }
+    .pv-settings { padding: 26px; }
+    .pv-settings-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+    .pv-settings-heading h2 { font-size: 22px; font-weight: 700; margin: 0; }
+    .pv-settings-dialog button, .pv-settings-dialog input { font: inherit; }
+    .pv-settings-dialog button { cursor: pointer; border-radius: 7px; border: 1px solid #ffffff25; background: #ffffff0a; color: inherit; padding: 8px 13px; }
+    .pv-settings-dialog button:hover { background: #ffffff18; }
+    .pv-settings-dialog button:disabled { opacity: .45; cursor: default; }
+    .pv-settings-dialog :focus-visible { outline: 2px solid var(--spice-button, #1ed760); outline-offset: 3px; }
+    .pv-settings-field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; min-width: 0; }
+    .pv-settings-field > label, .pv-settings-toggle { font-weight: 600; }
+    .pv-settings-input { background: #0003; border: 1px solid #ffffff30; border-radius: 7px; color: inherit; padding: 10px; width: 100%; }
+    .pv-settings-description, .pv-settings-status { color: var(--spice-subtext, #b3b3b3); font-size: 12px; font-weight: 400; margin: 0; }
+    .pv-settings-numbers { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .pv-settings-stepper { display: flex; gap: 8px; align-items: center; }
+    .pv-settings-stepper input { text-align: center; min-width: 0; }
+    .pv-settings-stepper button { font-size: 18px; padding: 5px 13px; }
+    .pv-settings-toggles { display: grid; gap: 14px; margin: 4px 0 22px; }
+    .pv-settings-toggle { display: flex; align-items: flex-start; gap: 11px; cursor: pointer; }
+    .pv-settings-toggle input { accent-color: var(--spice-button, #1ed760); width: 17px; height: 17px; margin: 3px 0 0; flex-shrink: 0; }
+    .pv-settings-toggle span { display: flex; flex-direction: column; gap: 2px; }
+    .pv-settings-enabled { margin-bottom: 22px; }
+    .pv-settings-colors { border: 0; margin: 0 0 18px; padding: 0; min-width: 0; }
+    .pv-settings-colors legend { font-weight: 600; margin-bottom: 9px; padding: 0; }
+    .pv-settings-color-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .pv-settings-color-field { display: flex; flex-direction: column; gap: 7px; font-size: 12px; color: var(--spice-subtext, #b3b3b3); cursor: pointer; }
+    .pv-settings-color { width: 100%; height: 34px; border: 1px solid #ffffff30; border-radius: 7px; padding: 3px; background: #0003; cursor: pointer; }
+    .pv-settings-color::-webkit-color-swatch-wrapper { padding: 0; }
+    .pv-settings-color::-webkit-color-swatch { border: 0; border-radius: 4px; }
+    .pv-settings-status { min-height: 18px; margin-bottom: 8px; }
+    .pv-settings-btn-row { display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid #ffffff15; padding-top: 18px; }
+    .pv-settings-dialog .pv-settings-btn { background: var(--spice-button, #1ed760); border-color: transparent; color: #000; font-weight: 700; }
+    .pv-settings-dialog .pv-settings-btn:hover { filter: brightness(1.1); }
+    .pv-settings-dialog .pv-settings-btn-secondary { background: #ffffff0a; border-color: #ffffff25; color: inherit; font-weight: 400; }
+    .pv-settings-dialog .pv-settings-btn-secondary:hover { background: #ffffff18; filter: none; }
+    @media (max-width: 420px) {
+      .pv-settings { padding: 18px; }
+      .pv-settings-numbers { grid-template-columns: 1fr; gap: 0; }
     }
   `;
 
@@ -848,16 +774,36 @@
   //  SETTINGS COMPONENT
   // ═══════════════════════════════════════════════════════════════
 
-  function Toggle({ checked, onChange }) {
-    return React.createElement(
-      "label",
-      { className: "pv-toggle" },
-      React.createElement("input", {
-        type: "checkbox",
-        checked,
-        onChange: (e) => onChange(e.target.checked),
-      }),
-      React.createElement("span", { className: "pv-toggle-slider" }),
+  function SettingsToggle({ name, label, description, checked, onChange }) {
+    return React.createElement("label", { className: "pv-settings-toggle" },
+      React.createElement("input", { type: "checkbox", name, checked, autoFocus: name === "enabled", onChange: (event) => onChange(event.target.checked) }),
+      React.createElement("span", null, label,
+        React.createElement("small", { className: "pv-settings-description" }, description)),
+    );
+  }
+
+  function NumberSetting({ name, label, description, value, onChange }) {
+    const { min, max } = SETTINGS_LIMITS[name];
+    const number = Number.parseInt(value, 10);
+    const normalized = Number.isFinite(number) ? clamp(number, min, max) : DEFAULT_SETTINGS[name];
+    return React.createElement("div", { className: "pv-settings-field" },
+      React.createElement("label", { htmlFor: "pv-" + name }, label),
+      React.createElement("div", { className: "pv-settings-stepper" },
+        React.createElement("button", { type: "button", "aria-label": "Decrease " + label.toLowerCase(), disabled: normalized <= min, onClick: () => onChange(normalized - 1) }, "−"),
+        React.createElement("input", {
+          id: "pv-" + name, name, className: "pv-settings-input", type: "number", min, max, step: 1, required: true, value,
+          "aria-describedby": "pv-" + name + "-hint",
+          onChange: (event) => onChange(event.target.value), onBlur: () => onChange(normalized),
+        }),
+        React.createElement("button", { type: "button", "aria-label": "Increase " + label.toLowerCase(), disabled: normalized >= max, onClick: () => onChange(normalized + 1) }, "+"),
+      ),
+      React.createElement("p", { id: "pv-" + name + "-hint", className: "pv-settings-description" }, description),
+    );
+  }
+
+  function ColorSetting({ name, label, value, onChange }) {
+    return React.createElement("label", { className: "pv-settings-color-field" }, label,
+      React.createElement("input", { name, className: "pv-settings-color", type: "color", value, onChange: (event) => onChange(event.target.value) }),
     );
   }
 
@@ -872,28 +818,27 @@
         closeTimerRef.current = null;
       }
     }
-
     useEffect(() => cancelClose, []);
 
     function update(key, value) {
-      setState((prev) => {
-        let clamped = value;
-        if (SETTINGS_LIMITS[key]) {
-          clamped = clamp(value, SETTINGS_LIMITS[key].min, SETTINGS_LIMITS[key].max);
-        }
-        return { ...prev, [key]: clamped };
-      });
+      setState((previous) => ({ ...previous, [key]: value }));
     }
 
-    function handleSave() {
-      saveAllSettings(state);
-      settings = { ...state };
+    function handleSave(event) {
+      event?.preventDefault();
+      const saved = { ...state };
+      for (const key of ["rows", "ballSpeed"]) {
+        const parsed = Number.parseInt(saved[key], 10);
+        saved[key] = Number.isFinite(parsed) ? clamp(parsed, SETTINGS_LIMITS[key].min, SETTINGS_LIMITS[key].max) : DEFAULT_SETTINGS[key];
+      }
+      saveAllSettings(saved);
+      settings = saved;
       applyEnabledState();
-      setStatus("Settings saved!");
+      setStatus("Settings saved.");
       cancelClose();
       closeTimerRef.current = setTimeout(() => {
         closeTimerRef.current = null;
-        PopupModal.hide();
+        closeSettings();
       }, 800);
     }
 
@@ -902,146 +847,60 @@
       const reset = { ...DEFAULT_SETTINGS };
       setState(reset);
       saveAllSettings(reset);
-      settings = { ...reset };
+      settings = reset;
       applyEnabledState();
-      setStatus("Reset to defaults");
+      setStatus("Defaults restored.");
     }
 
-    return React.createElement(
-      "div",
-      { className: "pv-settings" },
-
-      React.createElement(
-        "div",
-        { className: "pv-settings-group" },
-        React.createElement("span", { className: "pv-settings-label" }, "Extension"),
-        React.createElement(
-          "div",
-          { className: "pv-settings-row" },
-          React.createElement("span", { className: "pv-settings-row-label" }, "Enable Plinko Volume (hides normal controls)"),
-          React.createElement(Toggle, {
-            checked: state.enabled,
-            onChange: (v) => update("enabled", v),
-          }),
+    return React.createElement("form", { className: "pv-settings", onSubmit: handleSave },
+      React.createElement("div", { className: "pv-settings-heading" },
+        React.createElement("h2", { id: "pv-settings-title" }, "Plinko Volume Settings"),
+        React.createElement("button", { type: "button", "aria-label": "Close settings", onClick: closeSettings }, "✕"),
+      ),
+      React.createElement("div", { className: "pv-settings-enabled" },
+        React.createElement(SettingsToggle, { name: "enabled", label: "Enable Plinko Volume", description: "Replace the volume slider with the Plinko button.", checked: state.enabled, onChange: (value) => update("enabled", value) }),
+      ),
+      React.createElement("div", { className: "pv-settings-numbers" },
+        React.createElement(NumberSetting, { name: "rows", label: "Peg rows", description: "Choose 4–14 rows for the board.", value: state.rows, onChange: (value) => update("rows", value) }),
+        React.createElement(NumberSetting, { name: "ballSpeed", label: "Ball speed", description: "Choose a speed from 1 to 5.", value: state.ballSpeed, onChange: (value) => update("ballSpeed", value) }),
+      ),
+      React.createElement("div", { className: "pv-settings-toggles" },
+        React.createElement(SettingsToggle, { name: "showPercentages", label: "Show slot percentages", description: "Display the volume below each landing slot.", checked: state.showPercentages, onChange: (value) => update("showPercentages", value) }),
+        React.createElement(SettingsToggle, { name: "autoClose", label: "Close after a drop", description: "Close the game shortly after the ball lands.", checked: state.autoClose, onChange: (value) => update("autoClose", value) }),
+      ),
+      React.createElement("fieldset", { className: "pv-settings-colors" },
+        React.createElement("legend", null, "Colors"),
+        React.createElement("div", { className: "pv-settings-color-grid" },
+          React.createElement(ColorSetting, { name: "ballColor", label: "Ball", value: state.ballColor, onChange: (value) => update("ballColor", value) }),
+          React.createElement(ColorSetting, { name: "pegColor", label: "Pegs", value: state.pegColor, onChange: (value) => update("pegColor", value) }),
+          React.createElement(ColorSetting, { name: "backgroundColor", label: "Background", value: state.backgroundColor, onChange: (value) => update("backgroundColor", value) }),
         ),
       ),
-
-      React.createElement("div", { className: "pv-settings-divider" }),
-
-      React.createElement(
-        "div",
-        { className: "pv-settings-group" },
-        React.createElement("span", { className: "pv-settings-label" }, "Game"),
-        React.createElement(
-          "div",
-          { className: "pv-settings-row" },
-          React.createElement("span", { className: "pv-settings-row-label" }, `Peg Rows (${SETTINGS_LIMITS.rows.min}–${SETTINGS_LIMITS.rows.max})`),
-          React.createElement("input", {
-            className: "pv-settings-input",
-            type: "number",
-            min: SETTINGS_LIMITS.rows.min,
-            max: SETTINGS_LIMITS.rows.max,
-            value: state.rows,
-            onChange: (e) => update("rows", parseInt(e.target.value, 10) || DEFAULT_SETTINGS.rows),
-          }),
-        ),
-        React.createElement(
-          "div",
-          { className: "pv-settings-row" },
-          React.createElement("span", { className: "pv-settings-row-label" }, `Ball Speed (${SETTINGS_LIMITS.ballSpeed.min}–${SETTINGS_LIMITS.ballSpeed.max})`),
-          React.createElement("input", {
-            className: "pv-settings-input",
-            type: "number",
-            min: SETTINGS_LIMITS.ballSpeed.min,
-            max: SETTINGS_LIMITS.ballSpeed.max,
-            value: state.ballSpeed,
-            onChange: (e) => update("ballSpeed", parseInt(e.target.value, 10) || DEFAULT_SETTINGS.ballSpeed),
-          }),
-        ),
-        React.createElement(
-          "div",
-          { className: "pv-settings-row" },
-          React.createElement("span", { className: "pv-settings-row-label" }, "Show slot percentages"),
-          React.createElement(Toggle, {
-            checked: state.showPercentages,
-            onChange: (v) => update("showPercentages", v),
-          }),
-        ),
-        React.createElement(
-          "div",
-          { className: "pv-settings-row" },
-          React.createElement("span", { className: "pv-settings-row-label" }, "Auto-close after drop"),
-          React.createElement(Toggle, {
-            checked: state.autoClose,
-            onChange: (v) => update("autoClose", v),
-          }),
-        ),
-      ),
-
-      React.createElement("div", { className: "pv-settings-divider" }),
-
-      React.createElement(
-        "div",
-        { className: "pv-settings-group" },
-        React.createElement("span", { className: "pv-settings-label" }, "Colors"),
-        React.createElement(
-          "div",
-          { className: "pv-settings-row" },
-          React.createElement("span", { className: "pv-settings-row-label" }, "Ball"),
-          React.createElement("input", {
-            className: "pv-settings-color",
-            type: "color",
-            value: state.ballColor,
-            onChange: (e) => update("ballColor", e.target.value),
-          }),
-        ),
-        React.createElement(
-          "div",
-          { className: "pv-settings-row" },
-          React.createElement("span", { className: "pv-settings-row-label" }, "Pegs"),
-          React.createElement("input", {
-            className: "pv-settings-color",
-            type: "color",
-            value: state.pegColor,
-            onChange: (e) => update("pegColor", e.target.value),
-          }),
-        ),
-        React.createElement(
-          "div",
-          { className: "pv-settings-row" },
-          React.createElement("span", { className: "pv-settings-row-label" }, "Background"),
-          React.createElement("input", {
-            className: "pv-settings-color",
-            type: "color",
-            value: state.backgroundColor,
-            onChange: (e) => update("backgroundColor", e.target.value),
-          }),
-        ),
-      ),
-
-      React.createElement("span", { className: "pv-settings-status" }, status),
-
-      React.createElement(
-        "div",
-        { className: "pv-settings-btn-row" },
-        React.createElement(
-          "button",
-          {
-            className: "pv-settings-btn pv-settings-btn-secondary",
-            onClick: handleReset,
-          },
-          "Reset",
-        ),
-        React.createElement(
-          "button",
-          {
-            className: "pv-settings-btn",
-            onClick: handleSave,
-          },
-          "Save",
-        ),
+      React.createElement("p", { className: "pv-settings-status", role: "status" }, status),
+      React.createElement("div", { className: "pv-settings-btn-row" },
+        React.createElement("button", { type: "button", className: "pv-settings-btn pv-settings-btn-secondary", onClick: handleReset }, "Reset defaults"),
+        React.createElement("button", { type: "submit", className: "pv-settings-btn" }, "Save settings"),
       ),
     );
+  }
+
+  let settingsDialog = null;
+  let settingsRoot = null;
+  let settingsFocus = null;
+  let settingsPreviousOverflow = "";
+
+  function closeSettings() {
+    if (!settingsDialog) return;
+    const dialog = settingsDialog;
+    settingsDialog = null;
+    settingsRoot.unmount();
+    settingsRoot = null;
+    if (dialog.open) dialog.close();
+    dialog.remove();
+    document.body.style.overflow = settingsPreviousOverflow;
+    const focus = settingsFocus?.isConnected ? settingsFocus : document.getElementById("plinko-trigger");
+    focus?.focus();
+    settingsFocus = null;
   }
 
   // ═══════════════════════════════════════════════════════════════
@@ -1059,11 +918,37 @@
 
   function openSettings() {
     injectStyles();
-    PopupModal.display({
-      title: "Plinko Volume — Settings",
-      content: React.createElement(SettingsModal),
-      isLarge: true,
+    if (settingsDialog) {
+      settingsDialog.querySelector("input")?.focus();
+      return;
+    }
+    settingsFocus = document.activeElement;
+    if (document.querySelector(".plinko-container")) PopupModal.hide();
+    const dialog = document.createElement("dialog");
+    dialog.id = "plinko-volume-settings";
+    dialog.className = "pv-settings-dialog";
+    dialog.setAttribute("aria-labelledby", "pv-settings-title");
+    const host = document.createElement("div");
+    dialog.appendChild(host);
+    document.body.appendChild(dialog);
+    settingsDialog = dialog;
+    settingsPreviousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    dialog.addEventListener("cancel", (event) => {
+      event.preventDefault();
+      closeSettings();
     });
+    dialog.addEventListener("close", () => {
+      if (settingsDialog === dialog) closeSettings();
+    });
+    dialog.addEventListener("click", (event) => {
+      if (event.target !== dialog) return;
+      const rect = dialog.getBoundingClientRect();
+      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) closeSettings();
+    });
+    settingsRoot = ReactDOM.createRoot(host);
+    settingsRoot.render(React.createElement(SettingsModal));
+    dialog.showModal();
   }
 
   // ═══════════════════════════════════════════════════════════════
