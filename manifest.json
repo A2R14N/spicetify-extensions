@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Plinko Volume",
+    "description": "Gamble your Spotify volume with a customizable Plinko game and a live volume percentage.",
+    "main": "gamblevolume/gamblevolume.js",
+    "preview": "gamblevolume/preview.png",
+    "readme": "gamblevolume/README.md",
+    "authors": [
+      {
+        "name": "A2R14N",
+        "url": "https://github.com/A2R14N"
+      }
+    ],
+    "tags": ["game", "volume"]
+  }
+]
