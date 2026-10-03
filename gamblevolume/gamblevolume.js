@@ -30,16 +30,18 @@
     enabled: false,
     rows: 8,
     ballSpeed: 2,
+    luck: 0,
     showPercentages: true,
     autoClose: false,
     ballColor: "#1db954",
     pegColor: "#ffffff",
-    backgroundColor: "#121212",
+    backgroundColor: "#000000",
   };
 
   const SETTINGS_LIMITS = {
     rows: { min: 4, max: 14 },
     ballSpeed: { min: 1, max: 5 },
+    luck: { min: 0, max: 100 },
   };
 
   function clamp(value, min, max) {
@@ -67,6 +69,7 @@
         }
       }
     }
+    if (s.backgroundColor === "#121212") s.backgroundColor = DEFAULT_SETTINGS.backgroundColor;
     return s;
   }
 
@@ -121,107 +124,102 @@
       font-variant-numeric: tabular-nums;
     }
 
-    .plinko-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      padding: 8px 0;
-      user-select: none;
-    }
-
-    .plinko-canvas-wrap {
-      position: relative;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
-    }
-
-    .plinko-canvas {
-      display: block;
-      cursor: pointer;
-    }
-
-    .plinko-info {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      padding: 0 4px;
-    }
-
-    .plinko-volume-display {
-      font-size: 28px;
-      font-weight: 800;
-      color: var(--spice-text, #fff);
-      font-family: var(--font-family, CircularSp, sans-serif);
-      min-width: 80px;
-      text-align: center;
-    }
-
-    .plinko-hint {
-      font-size: 12px;
-      color: var(--spice-subtext, #b3b3b3);
-      text-align: center;
-      opacity: 0.7;
-    }
-
-    .plinko-drop-btn {
-      background: var(--spice-button, #1db954);
-      color: #000;
-      border: none;
-      border-radius: 24px;
-      padding: 12px 32px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.1s, opacity 0.2s;
+    .spicetify-popup-container:has(.plinko-container) {
+      --plinko-surface: var(--background-base, var(--spice-main, #121212));
+      --plinko-raised: var(--background-elevated-base, #242424);
+      --plinko-hover: var(--background-elevated-highlight, #2a2a2a);
+      --plinko-text: var(--text-base, var(--spice-text, #fff));
+      --plinko-subtext: var(--text-subdued, var(--spice-subtext, #b3b3b3));
+      --plinko-outline: var(--essential-subdued, #7c7c7c);
+      --plinko-divider: var(--decorative-subdued, #333);
+      --plinko-accent: var(--essential-bright-accent, var(--spice-button-active, #1ed760));
+      width: min(440px, calc(100vw - 32px));
+      max-width: none;
+      background: var(--plinko-surface);
+      color: var(--plinko-text);
+      border: 1px solid transparent;
+      border-radius: 16px;
+      padding: 0;
+      overflow: auto;
+      max-height: calc(100vh - 32px);
       font-family: var(--font-family, CircularSp, sans-serif);
     }
-
-    .plinko-drop-btn:hover {
-      transform: scale(1.05);
-      opacity: 0.9;
-    }
-
-    .plinko-drop-btn:active {
-      transform: scale(0.97);
-    }
-
-    .plinko-drop-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .plinko-btn-row {
-      display: flex;
-      gap: 8px;
+    .spicetify-popup-container:has(.plinko-container) .spicetify-popup-header {
+      padding: 24px 24px 20px;
+      margin: 0;
       align-items: center;
+      border: 0;
+      background: var(--plinko-surface);
     }
-
-    .plinko-skip-btn {
-      background: transparent;
-      color: var(--spice-subtext, #b3b3b3);
-      border: 1px solid var(--spice-shadow, #444);
-      border-radius: 24px;
-      padding: 12px 20px;
-      font-size: 14px;
+    .spicetify-popup-container:has(.plinko-container) .spicetify-popup-title {
+      font-size: 20px;
       font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.1s, color 0.2s;
-      font-family: var(--font-family, CircularSp, sans-serif);
+      line-height: 1.2;
+      letter-spacing: -.4px;
+      color: var(--plinko-text);
     }
-
-    .plinko-skip-btn:hover {
-      color: var(--spice-text, #fff);
-      transform: scale(1.05);
+    .spicetify-popup-container:has(.plinko-container) .spicetify-popup-closeBtn {
+      color: var(--plinko-subtext);
+      background: var(--plinko-raised);
+      width: 40px;
+      height: 40px;
+      padding: 11px;
+      margin: 0;
+      border-radius: 8px;
+    }
+    .spicetify-popup-container:has(.plinko-container) .spicetify-popup-closeBtn:hover { background: var(--plinko-hover); }
+    .spicetify-popup-container:has(.plinko-container) .spicetify-popup-content,
+    .spicetify-popup-container:has(.plinko-container) main { padding: 0; margin: 0; background: var(--plinko-surface); }
+    .plinko-container { display: block; padding: 0 24px 24px; color: var(--plinko-text); user-select: none; }
+    .plinko-container * { box-sizing: border-box; }
+    .plinko-info { display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 0 0 20px; gap: 12px; border-bottom: 1px solid var(--plinko-divider); }
+    .plinko-info-label { color: var(--plinko-subtext); font-size: 13px; }
+    .plinko-volume-display { font-size: 32px; font-weight: 500; line-height: 1; letter-spacing: -1px; text-align: right; min-width: 0; color: var(--plinko-text); font-variant-numeric: tabular-nums; }
+    .plinko-volume-unit { font-size: 20px; color: var(--plinko-subtext); margin-left: 3px; }
+    .plinko-canvas-wrap { --plinko-slot-gap: 3px; position: relative; overflow: hidden; margin-top: 20px; border: 1px solid #252525; border-radius: 10px; background: #000; padding: 0 4px 8px; }
+    .plinko-canvas { display: block; width: 100%; height: auto; cursor: pointer; }
+    /* Half-gap insets align the grid's gap centers with the canvas dividers. */
+    .plinko-slots { display: grid; gap: var(--plinko-slot-gap); padding: 0 calc(var(--plinko-slot-gap) / 2); }
+    .plinko-slot { display: flex; align-items: center; justify-content: center; min-width: 0; padding: 10px 0; border-radius: 4px; background: #151515; color: var(--plinko-slot-color); font-size: 11px; font-weight: 500; line-height: 1; text-align: center; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .plinko-slot.is-winner { background: var(--plinko-slot-highlight); font-weight: 700; }
+    .plinko-status { color: var(--plinko-subtext); font-size: 12px; line-height: 18px; min-height: 18px; text-align: center; margin: 18px 0 22px; }
+    .plinko-status.is-result { color: var(--plinko-accent); }
+    .plinko-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; border-top: 1px solid var(--plinko-divider); padding-top: 16px; }
+    .plinko-btn-row { display: flex; align-items: center; gap: 6px; }
+    .plinko-container button { min-height: 44px; padding: 0 16px; border: 1px solid transparent; border-radius: 8px; font: 600 13px var(--font-family, CircularSp, sans-serif); white-space: nowrap; cursor: pointer; transition: none; }
+    .plinko-container button:hover:not(:disabled), .plinko-container button:active:not(:disabled) { transform: none; opacity: 1; }
+    .plinko-drop-btn { background: var(--plinko-accent); color: #000; }
+    .plinko-drop-btn:hover:not(:disabled) { filter: brightness(1.08); }
+    .plinko-drop-btn:disabled { opacity: .5; cursor: default; }
+    .plinko-container .plinko-skip-btn, .plinko-container .plinko-settings-btn { color: var(--plinko-text); background: var(--plinko-raised); border-color: var(--plinko-outline); }
+    .plinko-skip-btn:hover:not(:disabled), .plinko-settings-btn:hover { background: var(--plinko-hover); }
+    .plinko-skip-btn:disabled { opacity: .45; cursor: default; }
+    .plinko-container .plinko-settings-btn { display: flex; align-items: center; gap: 7px; padding: 0 10px; }
+    .plinko-settings-btn svg { width: 16px; height: 16px; }
+    .plinko-container button:focus-visible { outline: 2px solid var(--plinko-accent); outline-offset: 3px; }
+    @media (max-width: 380px) {
+      .plinko-container { padding: 0 14px 18px; }
+      .spicetify-popup-container:has(.plinko-container) .spicetify-popup-header { padding: 18px 14px 20px; }
+      .plinko-container button { padding: 0 10px; }
+      .plinko-container .plinko-settings-btn { gap: 5px; padding: 0 7px; }
+      .plinko-btn-row { gap: 4px; }
+      .plinko-slots.is-dense { padding-bottom: 16px; }
+      .plinko-slots.is-dense .plinko-slot:nth-child(even) { transform: translateY(16px); }
     }
 
     .pv-settings-dialog {
-      color: var(--spice-text, #fff);
-      background: var(--spice-card, #181818);
-      border: 1px solid #ffffff20;
+      --pv-settings-surface: var(--background-base, var(--spice-main, #121212));
+      --pv-settings-raised: var(--background-elevated-base, #242424);
+      --pv-settings-hover: var(--background-elevated-highlight, #2a2a2a);
+      --pv-settings-text: var(--text-base, var(--spice-text, #fff));
+      --pv-settings-subtext: var(--text-subdued, var(--spice-subtext, #b3b3b3));
+      --pv-settings-outline: var(--essential-subdued, #7c7c7c);
+      --pv-settings-divider: var(--decorative-subdued, #333);
+      --pv-settings-accent: var(--essential-bright-accent, var(--spice-button-active, #1ed760));
+      color-scheme: dark;
+      color: var(--pv-settings-text);
+      background: var(--pv-settings-surface);
+      border: 1px solid transparent;
       border-radius: 14px;
       padding: 0;
       width: min(540px, calc(100vw - 40px));
@@ -235,37 +233,43 @@
     .pv-settings { padding: 26px; }
     .pv-settings-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
     .pv-settings-heading h2 { font-size: 22px; font-weight: 700; margin: 0; }
+    .pv-settings-dialog .pv-settings-heading button { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; flex-shrink: 0; border-color: transparent; }
     .pv-settings-dialog button, .pv-settings-dialog input { font: inherit; }
-    .pv-settings-dialog button { cursor: pointer; border-radius: 7px; border: 1px solid #ffffff25; background: #ffffff0a; color: inherit; padding: 8px 13px; }
-    .pv-settings-dialog button:hover { background: #ffffff18; }
+    .pv-settings-dialog button { cursor: pointer; border-radius: 7px; border: 1px solid var(--pv-settings-outline); background: var(--pv-settings-raised); color: inherit; padding: 8px 13px; }
+    .pv-settings-dialog button:hover { background: var(--pv-settings-hover); }
     .pv-settings-dialog button:disabled { opacity: .45; cursor: default; }
-    .pv-settings-dialog :focus-visible { outline: 2px solid var(--spice-button, #1ed760); outline-offset: 3px; }
+    .pv-settings-dialog :focus-visible { outline: 2px solid var(--pv-settings-accent); outline-offset: 3px; }
     .pv-settings-field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; min-width: 0; }
     .pv-settings-field > label, .pv-settings-toggle { font-weight: 600; }
-    .pv-settings-input { background: #0003; border: 1px solid #ffffff30; border-radius: 7px; color: inherit; padding: 10px; width: 100%; }
-    .pv-settings-description, .pv-settings-status { color: var(--spice-subtext, #b3b3b3); font-size: 12px; font-weight: 400; margin: 0; }
+    .pv-settings-input { background: var(--pv-settings-raised); border: 1px solid var(--pv-settings-outline); border-radius: 7px; color: inherit; padding: 10px; width: 100%; }
+    .pv-settings-description, .pv-settings-status { color: var(--pv-settings-subtext); font-size: 12px; font-weight: 400; margin: 0; }
     .pv-settings-numbers { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
     .pv-settings-stepper { display: flex; gap: 8px; align-items: center; }
-    .pv-settings-stepper input { text-align: center; min-width: 0; }
-    .pv-settings-stepper button { font-size: 18px; padding: 5px 13px; }
+    .pv-settings-stepper input { appearance: textfield; text-align: center; min-width: 0; height: 44px; padding: 0 10px; }
+    .pv-settings-stepper input::-webkit-inner-spin-button,
+    .pv-settings-stepper input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    .pv-settings-stepper button { display: grid; place-items: center; flex: 0 0 40px; height: 44px; font-size: 18px; line-height: 1; padding: 0; }
+    .pv-settings-range-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-weight: 600; }
+    .pv-settings-range-heading output { font-variant-numeric: tabular-nums; }
+    .pv-settings-dialog .pv-settings-range { width: 100%; height: 20px; margin: 0; padding: 0; border: 0; accent-color: var(--pv-settings-accent); cursor: pointer; }
     .pv-settings-toggles { display: grid; gap: 14px; margin: 4px 0 22px; }
     .pv-settings-toggle { display: flex; align-items: flex-start; gap: 11px; cursor: pointer; }
-    .pv-settings-toggle input { accent-color: var(--spice-button, #1ed760); width: 17px; height: 17px; margin: 3px 0 0; flex-shrink: 0; }
+    .pv-settings-toggle input { accent-color: var(--pv-settings-accent); width: 17px; height: 17px; margin: 3px 0 0; flex-shrink: 0; }
     .pv-settings-toggle span { display: flex; flex-direction: column; gap: 2px; }
     .pv-settings-enabled { margin-bottom: 22px; }
     .pv-settings-colors { border: 0; margin: 0 0 18px; padding: 0; min-width: 0; }
     .pv-settings-colors legend { font-weight: 600; margin-bottom: 9px; padding: 0; }
     .pv-settings-color-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .pv-settings-color-field { display: flex; flex-direction: column; gap: 7px; font-size: 12px; color: var(--spice-subtext, #b3b3b3); cursor: pointer; }
-    .pv-settings-color { width: 100%; height: 34px; border: 1px solid #ffffff30; border-radius: 7px; padding: 3px; background: #0003; cursor: pointer; }
+    .pv-settings-color-field { display: flex; flex-direction: column; gap: 7px; font-size: 12px; color: var(--pv-settings-subtext); cursor: pointer; }
+    .pv-settings-color { width: 100%; height: 34px; border: 1px solid var(--pv-settings-outline); border-radius: 7px; padding: 3px; background: var(--pv-settings-raised); cursor: pointer; }
     .pv-settings-color::-webkit-color-swatch-wrapper { padding: 0; }
     .pv-settings-color::-webkit-color-swatch { border: 0; border-radius: 4px; }
     .pv-settings-status { min-height: 18px; margin-bottom: 8px; }
-    .pv-settings-btn-row { display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid #ffffff15; padding-top: 18px; }
-    .pv-settings-dialog .pv-settings-btn { background: var(--spice-button, #1ed760); border-color: transparent; color: #000; font-weight: 700; }
+    .pv-settings-btn-row { display: flex; justify-content: space-between; gap: 10px; border-top: 1px solid var(--pv-settings-divider); padding-top: 18px; }
+    .pv-settings-dialog .pv-settings-btn { background: var(--pv-settings-accent); border-color: transparent; color: #000; font-weight: 700; }
     .pv-settings-dialog .pv-settings-btn:hover { filter: brightness(1.1); }
-    .pv-settings-dialog .pv-settings-btn-secondary { background: #ffffff0a; border-color: #ffffff25; color: inherit; font-weight: 400; }
-    .pv-settings-dialog .pv-settings-btn-secondary:hover { background: #ffffff18; filter: none; }
+    .pv-settings-dialog .pv-settings-btn-secondary { background: var(--pv-settings-raised); border-color: var(--pv-settings-outline); color: inherit; font-weight: 400; }
+    .pv-settings-dialog .pv-settings-btn-secondary:hover { background: var(--pv-settings-hover); filter: none; }
     @media (max-width: 420px) {
       .pv-settings { padding: 18px; }
       .pv-settings-numbers { grid-template-columns: 1fr; gap: 0; }
@@ -282,167 +286,109 @@
   }
 
   // ═══════════════════════════════════════════════════════════════
-  //  PLINKO PHYSICS ENGINE
+  //  PLINKO PATH ENGINE
   // ═══════════════════════════════════════════════════════════════
 
   function createPlinkoEngine(config) {
-    const { width, height, rows, pegRadius, ballRadius, gravity, damping, ballSpeedMultiplier } = config;
-
+    const { width, height, rows, pegRadius, ballRadius, ballSpeedMultiplier, luck = 0 } = config;
     const slots = rows + 1;
-    const pegSpacingX = width / (rows + 2);
-    const pegSpacingY = (height - 80) / (rows + 1);
-    const startY = 30;
-    // Preserve clearance between adjacent pegs at the highest row counts.
-    const effectiveBallRadius = Math.min(ballRadius, (pegSpacingX - pegRadius * 2) / 2 - 1);
-
+    const slotWidth = width / slots;
+    const luckRatio = clamp(Number.isFinite(luck) ? luck : 0, 0, 100) / 100;
+    const cumulativeOdds = [];
+    let baseOdds = 2 ** -rows, cumulative = 0;
+    for (let slot = 0; slot < slots; slot++) {
+      cumulative += (1 - luckRatio) * baseOdds + luckRatio / slots;
+      cumulativeOdds.push(cumulative);
+      baseOdds *= (rows - slot) / (slot + 1);
+    }
+    cumulativeOdds[rows] = 1;
+    const pegSpacingY = (height - 112) / (rows - 1);
+    const firstPegY = 48;
+    const effectiveBallRadius = Math.min(ballRadius, (slotWidth - pegRadius * 2) / 2 - 1);
+    const clearance = pegRadius + effectiveBallRadius;
+    const landingY = height - 16 - effectiveBallRadius;
+    const bounceHeight = Math.min(12, pegSpacingY * 0.4);
     const pegs = [];
-    for (let row = 0; row < rows; row++) {
-      const pegsInRow = row + 2;
-      const rowWidth = (pegsInRow - 1) * pegSpacingX;
-      const startX = (width - rowWidth) / 2;
+    const slotBoundaries = [];
+    const slotValues = [];
 
-      for (let col = 0; col < pegsInRow; col++) {
-        pegs.push({
-          x: startX + col * pegSpacingX,
-          y: startY + (row + 1) * pegSpacingY,
-          radius: pegRadius,
-        });
+    // One apex peg, followed by a triangular grid aligned with every landing slot.
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col <= row; col++) {
+        pegs.push({ x: width / 2 + (col - row / 2) * slotWidth, y: firstPegY + row * pegSpacingY, radius: pegRadius });
       }
     }
+    for (let i = 0; i <= slots; i++) slotBoundaries.push(i * slotWidth);
+    for (let i = 0; i < slots; i++) slotValues.push(Math.round(i / rows * 100));
 
-    const slotWidth = width / slots;
-    const slotBoundaries = [];
-    for (let i = 0; i <= slots; i++) {
-      slotBoundaries.push(i * slotWidth);
-    }
-
-    const slotValues = [];
-    for (let i = 0; i < slots; i++) {
-      slotValues.push(Math.round((i / (slots - 1)) * 100));
-    }
-
-    function createBall(dropX) {
+    function segment(fromX, fromY, toX, toY, duration, bounce) {
+      const c1x = fromX + (toX - fromX) * 0.65;
+      const c1y = bounce ? fromY - bounceHeight : fromY + (toY - fromY) * 0.15;
+      const c2x = toX;
+      const c2y = toY - (toY - fromY) * 0.4;
+      // Precompute the cubic coefficients once; each frame only evaluates one curve.
       return {
-        x: dropX ?? width / 2 + (Math.random() - 0.5) * 20,
-        y: 10,
-        vx: 0,
-        vy: 0,
-        radius: effectiveBallRadius,
-        active: true,
-        landed: false,
-        landedSlot: -1,
-        bounceCount: 0,
+        duration,
+        ax: -fromX + 3 * c1x - 3 * c2x + toX, bx: 3 * fromX - 6 * c1x + 3 * c2x, cx: 3 * (c1x - fromX), dx: fromX,
+        ay: -fromY + 3 * c1y - 3 * c2y + toY, by: 3 * fromY - 6 * c1y + 3 * c2y, cy: 3 * (c1y - fromY), dy: fromY,
       };
+    }
+
+    function createBall() {
+      // Luck blends the binomial distribution with equal chances for all slots.
+      let targetRights = 0;
+      if (luckRatio > 0) {
+        const draw = Math.random();
+        while (targetRights < rows && draw >= cumulativeOdds[targetRights]) targetRights++;
+      }
+      const segments = [];
+      let rights = 0, x = width / 2, y = firstPegY - clearance;
+      segments.push(segment(x, 16, x, y, 0.35 / ballSpeedMultiplier, false));
+      for (let row = 0; row < rows; row++) {
+        // At zero luck each row is independent; otherwise randomize a path to the chosen slot.
+        const goRight = luckRatio === 0 ? Math.random() >= 0.5 : Math.random() < (targetRights - rights) / (rows - row);
+        if (goRight) rights++;
+        const nextX = width / 2 + (rights - (row + 1) / 2) * slotWidth;
+        const nextY = row === rows - 1 ? landingY : firstPegY + (row + 1) * pegSpacingY - clearance;
+        segments.push(segment(x, y, nextX, nextY, (row === rows - 1 ? 0.42 : 0.36) / ballSpeedMultiplier, true));
+        x = nextX; y = nextY;
+      }
+      return {
+        x: width / 2, y: 16, radius: effectiveBallRadius, active: true, landed: false,
+        landedSlot: -1, targetSlot: rights, bounceCount: 0, segments, segmentIndex: 0, elapsed: 0,
+      };
+    }
+
+    function simulate(ball) {
+      if (!ball.active) return;
+      ball.x = (ball.targetSlot + 0.5) * slotWidth;
+      ball.y = landingY;
+      ball.bounceCount = rows;
+      ball.active = false;
+      ball.landed = true;
+      ball.landedSlot = ball.targetSlot;
     }
 
     function stepBall(ball, dt) {
       if (!ball.active) return;
-
-      const scaledDt = dt * ballSpeedMultiplier;
-
-      ball.vy += gravity * scaledDt;
-
-      const friction = 0.999;
-      ball.vx *= friction;
-      ball.vy *= friction;
-
-      ball.x += ball.vx * scaledDt;
-      ball.y += ball.vy * scaledDt;
-
-      for (const peg of pegs) {
-        const dx = ball.x - peg.x;
-        const dy = ball.y - peg.y;
-        const distSq = dx * dx + dy * dy;
-        const minDist = ball.radius + peg.radius;
-
-        if (distSq >= minDist * minDist || distSq === 0) continue;
-
-        const dist = Math.sqrt(distSq);
-        const nx = dx / dist;
-        const ny = dy / dist;
-
-        ball.x = peg.x + nx * (minDist + 0.1);
-        ball.y = peg.y + ny * (minDist + 0.1);
-
-        const velDotN = ball.vx * nx + ball.vy * ny;
-
-        if (velDotN >= 0) continue;
-
-        const tx = -ny;
-        const ty = nx;
-        const velDotT = ball.vx * tx + ball.vy * ty;
-
-        const restitution = 0.3;
-
-        const tangentFriction = 0.95;
-
-        const newVn = -velDotN * restitution;
-        const newVt = velDotT * tangentFriction;
-
-        ball.vx = nx * newVn + tx * newVt;
-        ball.vy = ny * newVn + ty * newVt;
-
-        const incomingSpeed = Math.abs(velDotN);
-        const nudge = Math.max(8, incomingSpeed * 0.15);
-        ball.vx += (Math.random() - 0.5) * nudge;
-
-        ball.bounceCount++;
-      }
-
-      if (ball.x - ball.radius < 0) {
-        ball.x = ball.radius + 0.1;
-        ball.vx = Math.abs(ball.vx) * 0.3;
-      }
-      if (ball.x + ball.radius > width) {
-        ball.x = width - ball.radius - 0.1;
-        ball.vx = -Math.abs(ball.vx) * 0.3;
-      }
-
-      if (ball.y + ball.radius >= height - 20) {
-        ball.y = height - 20 - ball.radius;
-        ball.vy = 0;
-        ball.vx = 0;
-        ball.active = false;
-        ball.landed = true;
-        ball.landedSlot = findNearestSlot(ball.x);
-      }
-    }
-
-    function findNearestSlot(x) {
-      const clampedX = Math.max(0, Math.min(width, x));
-      for (let i = 0; i < slots; i++) {
-        if (clampedX >= slotBoundaries[i] && clampedX < slotBoundaries[i + 1]) {
-          return i;
+      ball.elapsed += Math.max(0, dt);
+      let curve = ball.segments[ball.segmentIndex];
+      while (ball.elapsed >= curve.duration) {
+        ball.elapsed -= curve.duration;
+        ball.segmentIndex++;
+        if (ball.segmentIndex === ball.segments.length) {
+          simulate(ball);
+          return;
         }
+        curve = ball.segments[ball.segmentIndex];
       }
-      return slots - 1;
+      ball.bounceCount = ball.segmentIndex;
+      const t = ball.elapsed / curve.duration;
+      ball.x = ((curve.ax * t + curve.bx) * t + curve.cx) * t + curve.dx;
+      ball.y = ((curve.ay * t + curve.by) * t + curve.cy) * t + curve.dy;
     }
 
-    function simulate(ball) {
-      const simDt = 1 / 60;
-      const maxSteps = 10000;
-      for (let i = 0; i < maxSteps && ball.active; i++) {
-        stepBall(ball, simDt);
-      }
-      if (!ball.landed) {
-        ball.active = false;
-        ball.landed = true;
-        ball.landedSlot = findNearestSlot(ball.x);
-      }
-    }
-
-    return {
-      pegs,
-      slots,
-      slotWidth,
-      slotBoundaries,
-      slotValues,
-      createBall,
-      stepBall,
-      simulate,
-      width,
-      height,
-    };
+    return { pegs, slots, slotWidth, slotBoundaries, slotValues, createBall, stepBall, simulate, width, height };
   }
 
   // ═══════════════════════════════════════════════════════════════
@@ -466,18 +412,17 @@
     const currentVolume = Math.round((Player.getVolume?.() ?? 0.5) * 100);
 
     const CANVAS_WIDTH = 380;
-    const CANVAS_HEIGHT = 420;
+    const CANVAS_HEIGHT = 306;
 
     if (!engineRef.current) {
       engineRef.current = createPlinkoEngine({
         width: CANVAS_WIDTH,
         height: CANVAS_HEIGHT,
         rows: settings.rows,
-        pegRadius: 5,
-        ballRadius: 8,
-        gravity: 600,
-        damping: 0.6,
+        pegRadius: 3,
+        ballRadius: 6,
         ballSpeedMultiplier: settings.ballSpeed,
+        luck: settings.luck,
       });
     }
 
@@ -516,25 +461,13 @@
         ctx.strokeStyle = "rgba(255,255,255,0.1)";
         ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(x, CANVAS_HEIGHT - 40);
+        ctx.moveTo(x, CANVAS_HEIGHT - 18);
         ctx.lineTo(x, CANVAS_HEIGHT);
         ctx.stroke();
       }
 
-      if (settings.showPercentages) {
-        ctx.font = "bold 10px sans-serif";
-        ctx.textAlign = "center";
-        for (let i = 0; i < engine.slots; i++) {
-          const x = engine.slotBoundaries[i] + engine.slotWidth / 2;
-          const vol = engine.slotValues[i];
-          const hue = (vol / 100) * 120;
-          ctx.fillStyle = `hsl(${hue}, 80%, 55%)`;
-          ctx.fillText(`${vol}%`, x, CANVAS_HEIGHT - 5);
-        }
-      }
-
       ctx.save();
-      ctx.globalAlpha = 0.6;
+      ctx.globalAlpha = 0.85;
       ctx.fillStyle = settings.pegColor;
       ctx.beginPath();
       for (const peg of engine.pegs) {
@@ -544,15 +477,6 @@
       ctx.fill();
       ctx.restore();
 
-      ctx.save();
-      ctx.globalAlpha = 0.3;
-      ctx.beginPath();
-      ctx.moveTo(CANVAS_WIDTH / 2 - 15, 5);
-      ctx.lineTo(CANVAS_WIDTH / 2, 18);
-      ctx.lineTo(CANVAS_WIDTH / 2 + 15, 5);
-      ctx.fillStyle = settings.ballColor;
-      ctx.fill();
-      ctx.restore();
     }
 
     function drawBall(ball) {
@@ -595,20 +519,6 @@
       ctx.restore();
     }
 
-    function highlightSlot(slotIndex) {
-      const ctx = getCtx();
-      const engine = engineRef.current;
-      if (!ctx || !engine) return;
-
-      const x = engine.slotBoundaries[slotIndex];
-      const w = engine.slotWidth;
-      const vol = engine.slotValues[slotIndex];
-      const hue = (vol / 100) * 120;
-
-      ctx.fillStyle = `hsla(${hue}, 80%, 55%, 0.25)`;
-      ctx.fillRect(x, CANVAS_HEIGHT - 40, w, 40);
-    }
-
     function cancelAutoClose() {
       if (autoCloseTimerRef.current !== null) {
         clearTimeout(autoCloseTimerRef.current);
@@ -622,13 +532,12 @@
 
       drawStatic();
       drawBall(ball);
-      highlightSlot(ball.landedSlot);
 
       setResultVolume(vol);
       setIsDropping(false);
       Player.setVolume?.(vol / 100);
       updateTriggerVolume(vol / 100);
-      Spicetify.showNotification(`🎰 Volume set to ${vol}%!`);
+      Spicetify.showNotification(`Volume set to ${vol}%`);
 
       cancelAutoClose();
       if (settings.autoClose) {
@@ -652,10 +561,7 @@
       const dt = Math.min((timestamp - lastTimeRef.current) / 1000, 0.05);
       lastTimeRef.current = timestamp;
 
-      const subSteps = 4;
-      for (let i = 0; i < subSteps; i++) {
-        engine.stepBall(ball, dt / subSteps);
-      }
+      engine.stepBall(ball, dt);
 
       if (ball.landed) {
         applyResult(ball);
@@ -698,6 +604,7 @@
 
     useEffect(() => {
       drawStatic();
+      drawBall({ x: CANVAS_WIDTH / 2, y: 16, radius: 6 });
       return () => {
         cancelAutoClose();
         if (animFrameRef.current) {
@@ -716,9 +623,9 @@
       React.createElement(
         "div",
         { className: "plinko-info" },
-        React.createElement("span", { className: "plinko-hint" }, "Current"),
-        React.createElement("span", { className: "plinko-volume-display" }, resultVolume !== null ? `${resultVolume}%` : `${currentVolume}%`),
-        React.createElement("span", { className: "plinko-hint" }, resultVolume !== null ? "🎰 New!" : "Volume"),
+        React.createElement("span", { className: "plinko-info-label" }, "Current volume"),
+        React.createElement("span", { className: "plinko-volume-display" }, resultVolume !== null ? resultVolume : currentVolume,
+          React.createElement("span", { className: "plinko-volume-unit" }, "%")),
       ),
 
       React.createElement(
@@ -740,33 +647,39 @@
             }
           },
         }),
+        settings.showPercentages ? React.createElement("div", { className: "plinko-slots" + (engineRef.current.slots > 11 ? " is-dense" : ""), style: { gridTemplateColumns: `repeat(${engineRef.current.slots}, minmax(0, 1fr))` }, "aria-label": "Possible volume results" },
+          ...engineRef.current.slotValues.map((vol) => React.createElement("span", {
+            key: vol, className: "plinko-slot" + (resultVolume === vol ? " is-winner" : ""),
+            "aria-label": `${vol}% volume`,
+            style: { "--plinko-slot-color": `hsl(${vol / 100 * 120}, 80%, 55%)`, "--plinko-slot-highlight": `hsla(${vol / 100 * 120}, 80%, 55%, .25)` },
+          }, vol)),
+        ) : null,
       ),
 
+      React.createElement("p", { className: "plinko-status" + (resultVolume !== null ? " is-result" : ""), "aria-live": "polite" },
+        isDropping ? "Dropping…" : resultVolume !== null ? `Volume set to ${resultVolume}%` : "Drop a ball to choose your volume"),
       React.createElement(
         "div",
-        { className: "plinko-btn-row" },
+        { className: "plinko-footer" },
+        React.createElement("button", { className: "plinko-settings-btn", type: "button", onClick: openSettings },
+          React.createElement("svg", { width: 16, height: 16, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.5, "aria-hidden": true },
+            React.createElement("path", { d: "M3 7h5m4 0h9M3 17h9m4 0h5" }),
+            React.createElement("circle", { cx: 10, cy: 7, r: 2 }), React.createElement("circle", { cx: 14, cy: 17, r: 2 })),
+          "Settings"),
+        React.createElement("div", { className: "plinko-btn-row" },
+        React.createElement("button", { className: "plinko-skip-btn", type: "button", onClick: skipDrop, disabled: !isDropping }, "Skip"),
         React.createElement(
           "button",
           {
             className: "plinko-drop-btn",
             onClick: dropBall,
             disabled: isDropping,
+            type: "button",
           },
-          isDropping ? "Dropping..." : "🎲 Drop Ball",
+          "Drop ball",
         ),
-        isDropping
-          ? React.createElement(
-              "button",
-              {
-                className: "plinko-skip-btn",
-                onClick: skipDrop,
-              },
-              "Skip ⏭",
-            )
-          : null,
+        ),
       ),
-
-      React.createElement("span", { className: "plinko-hint" }, "Click the board or button to drop a ball"),
     );
   }
 
@@ -807,6 +720,21 @@
     );
   }
 
+  function LuckSetting({ value, onChange }) {
+    return React.createElement("div", { className: "pv-settings-field" },
+      React.createElement("div", { className: "pv-settings-range-heading" },
+        React.createElement("label", { htmlFor: "pv-luck" }, "Luck"),
+        React.createElement("output", { htmlFor: "pv-luck" }, value + "%")),
+      React.createElement("input", {
+        id: "pv-luck", name: "luck", className: "pv-settings-range", type: "range", min: 0, max: 100, step: 1, value,
+        "aria-describedby": "pv-luck-hint", "aria-valuetext": value + "% luck",
+        onChange: (event) => onChange(Number(event.target.value)),
+      }),
+      React.createElement("p", { id: "pv-luck-hint", className: "pv-settings-description" },
+        "Give outer slots more chances. 0% keeps current odds; 100% gives every slot an equal chance."),
+    );
+  }
+
   function SettingsModal() {
     const [state, setState] = useState({ ...settings });
     const [status, setStatus] = useState("");
@@ -827,7 +755,7 @@
     function handleSave(event) {
       event?.preventDefault();
       const saved = { ...state };
-      for (const key of ["rows", "ballSpeed"]) {
+      for (const key of ["rows", "ballSpeed", "luck"]) {
         const parsed = Number.parseInt(saved[key], 10);
         saved[key] = Number.isFinite(parsed) ? clamp(parsed, SETTINGS_LIMITS[key].min, SETTINGS_LIMITS[key].max) : DEFAULT_SETTINGS[key];
       }
@@ -864,6 +792,7 @@
         React.createElement(NumberSetting, { name: "rows", label: "Peg rows", description: "Choose 4–14 rows for the board.", value: state.rows, onChange: (value) => update("rows", value) }),
         React.createElement(NumberSetting, { name: "ballSpeed", label: "Ball speed", description: "Choose a speed from 1 to 5.", value: state.ballSpeed, onChange: (value) => update("ballSpeed", value) }),
       ),
+      React.createElement(LuckSetting, { value: state.luck, onChange: (value) => update("luck", value) }),
       React.createElement("div", { className: "pv-settings-toggles" },
         React.createElement(SettingsToggle, { name: "showPercentages", label: "Show slot percentages", description: "Display the volume below each landing slot.", checked: state.showPercentages, onChange: (value) => update("showPercentages", value) }),
         React.createElement(SettingsToggle, { name: "autoClose", label: "Close after a drop", description: "Close the game shortly after the ball lands.", checked: state.autoClose, onChange: (value) => update("autoClose", value) }),
@@ -910,7 +839,7 @@
   function openPlinko() {
     injectStyles();
     PopupModal.display({
-      title: "🎰 Plinko Volume",
+      title: "Plinko Volume",
       content: React.createElement(PlinkoGame),
       isLarge: true,
     });
